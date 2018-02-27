@@ -36,8 +36,8 @@ resource "aws_security_group_rule" "rule" {
 	type = "ingress"
 	protocol = "tcp"
 	from_port       = "${lookup(var.ingress[count.index], "from_port")}"
-  	to_port         = "${lookup(var.ingress[count.index], "to_port")}"
-  	cidr_blocks     = ["${lookup(var.ingress[count.index], "cidr_blocks")}"]
+  to_port         = "${lookup(var.ingress[count.index], "to_port")}"
+  cidr_blocks     = ["${lookup(var.ingress[count.index], "cidr_blocks")}"]
 	security_group_id 	="${aws_security_group.sg_kudz.id}"
 }
 
@@ -45,6 +45,7 @@ resource "aws_instance" "app-kudz" {
     ami 				= "${var.ami_id}"
     instance_type		= "t2.micro"
     user_data 			= "${var.user_data}"
+    count = "${var.machine_count}"
     subnet_id 			= "${aws_subnet.app-kudz.id}"
     security_groups 	= ["${aws_security_group.sg_kudz.id}"]
     tags {

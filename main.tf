@@ -46,18 +46,18 @@ resource "aws_elb" "app-kudz" {
 
 
   listener {
-    instance_port     = 3000
+    instance_port     = 80
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
   }
 
   health_check {
-    healthy_threshold   = 5
+    healthy_threshold   = 2
     unhealthy_threshold = 2
-    timeout             = 5
-    target              = "HTTP:3000/"
-    interval            = 30
+    timeout             = 3
+    target              = "HTTP:80/"
+    interval            = 10
   }
 
   instances                   = ["${module.app-tier.app_id}"]
@@ -80,6 +80,7 @@ resource "aws_elb" "app-kudz" {
 	cidr_block = "10.3.1.0/24"
 	route_table_id = "${aws_route_table.public-kudz.id}"
 	user_data = ""
+	machine_count = 1
 	ami_id =  "ami-6a84ef13"
 
 	ingress = [{
@@ -95,6 +96,7 @@ module "app-tier" {
 	name = "app-kudz"
 	source = "./modules/tier"
 	vpc_id = "${aws_vpc.vpc-kudz.id}"
+	machine_count = 2
 	cidr_block = "10.3.0.0/24"
 	route_table_id = "${aws_route_table.public-kudz.id}"
 	user_data = "${data.template_file.app_init.rendered}"

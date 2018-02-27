@@ -3,11 +3,11 @@ output "subnet_cidr_block" {
 }
 
 output "db_ip" {
-  value = "${aws_instance.app-kudz.private_ip}"
+  value = "${aws_instance.app-kudz.*.private_ip[0]}"
 }
 
 output "app_id" {
-  value = "${aws_instance.app-kudz.id}"
+  value = "${aws_instance.app-kudz.*.id}"
 }
 
 output "sub_n" {

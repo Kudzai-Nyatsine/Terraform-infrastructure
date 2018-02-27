@@ -30,3 +30,7 @@ variable "map_public_ip_on_launch" {
 variable "ingress" {
 	type = "list"
 }
+
+variable "machine_count" {
+  description = "The number of machines to create"
+}
